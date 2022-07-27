@@ -8,7 +8,7 @@ export async function main( { sendMessage, messageData }: InputParameter ): Prom
 	let size = "regular";
 	if ( content.endsWith( "原图" ) ) {
 		size = "original";
-		content = content.substr( 0, -2 ).trim();
+		content = content.slice( 0, -2 ).trim();
 	}
 	let setu: string | LoliconSetu;
 	if ( content ) {
