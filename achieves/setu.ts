@@ -38,7 +38,8 @@ async function sendHumanImg( sendMessage: ( content: Sendable, allowAt?: boolean
 	// 随机获取一张三次元PC图或者手机图
 	const url: string = await getHumanImgUrlRandom();
 	const image: ImgPttElem = segment.image( url, true, 30000 );
-	await sendMessage( image );
+	const imageCq: string = segment.toCqcode( image );
+	await sendMessage( imageCq );
 }
 
 export async function main( { sendMessage, messageData }: InputParameter ): Promise<void> {
