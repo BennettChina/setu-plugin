@@ -17,7 +17,8 @@ const setu: OrderConfig = {
 		"无参数 随机获取一张图片\n" +
 		"有参数 获取一张该关键词风格的涩图，多个关键词以空格隔开（空格AND条件，｜是OR条件）\n" +
 		"比如: #setu 萝莉｜少女 白丝｜黑丝\n" +
-		"如果要获取原图请在最后加上原图两字并用空格与之前的参数隔开"
+		"如果要获取原图请在最后加上原图两字并用空格与之前的参数隔开\n" +
+		"获取三次元美女图可用#setu 真人"
 }
 
 function loadConfig( file: FileManagement ): SetuConfig {

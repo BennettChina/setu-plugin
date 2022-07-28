@@ -45,12 +45,16 @@ git clone https://gitclone.com/github.com/BennettChina/setu-plugin.git
 r18: false
 # P站的反代服务，详情见 https://api.lolicon.app/#/setu?id=proxy
 proxy: i.pixiv.re
+# 是否开启发送三次元涩图的功能 (韩小韩的API，海外不可用)
+humanGirls: true
 ```
 
 ## 更新日志
 
+- 2022/07/28 添加随机获取三次元涩图功能（使用韩小韩的API，海外不可用）。
 - 2022/07/26 添加获取随机涩图功能。
 
 ## 感谢
 
 - 感谢 [Lolicon API](https://api.lolicon.app/#/setu) 站长提供的API
+- 感谢 [韩小韩](https://api.vvhan.com/) 提供的 API 服务。
