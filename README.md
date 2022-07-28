@@ -36,6 +36,11 @@ git clone https://gitclone.com/github.com/BennettChina/setu-plugin.git
 命令: <header> setu 刻晴|甘雨 黑丝|白丝 原图
 范围: 群/私聊
 权限: 用户 (User)
+
+# 随机获取一张三次元涩图
+命令: <header> setu 真人
+范围: 群/私聊
+权限: 用户 (User)
 ```
 
 ## 插件配置
