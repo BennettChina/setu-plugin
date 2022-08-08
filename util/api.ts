@@ -62,8 +62,19 @@ export async function getHumanImgUrlRandom(): Promise<string> {
 		baseurl = API.girls_mobile;
 	}
 	
+	let headers = {};
+	if ( config.vvhanCdn ) {
+		baseurl = baseurl.replace( "https://api.vvhan.com", config.vvhanCdn );
+		headers = {
+			"Referer": "https://hibennett.cn/?bot=SilveryStar/Adachi-BOT&plugin=setu-plugin&version=v1"
+		}
+	}
+	
 	return new Promise( ( resolve, reject ) => {
-		axios.get( `${ baseurl }?type=json`, { timeout: 5000 } )
+		axios.get( `${ baseurl }?type=json`, {
+			timeout: 5000,
+			headers
+		} )
 			.then( response => {
 				if ( response.data.success ) {
 					const imgUrl = response.data.imgurl;
