@@ -1,10 +1,13 @@
 import { InputParameter } from "@modules/command";
 import { getHumanImgUrlRandom, getSetu } from "#setu-plugin/util/api";
 import { LoliconSetu } from "#setu-plugin/types/type";
-import { ImgPttElem, segment, Sendable } from "oicq";
+import { Client, ImgPttElem, segment } from "oicq";
 import { config } from "#setu-plugin/init";
+import { getTargetInfo, sendMsg, wait } from "#setu-plugin/util/utils";
+import { Message } from "@modules/message";
 
-async function sendAcgnImg( content: string, sendMessage: ( content: Sendable, allowAt?: boolean ) => Promise<void> ) {
+async function sendAcgnImg( messageData: Message, client: Client, atUser: boolean ): Promise<string> {
+	let content = messageData.raw_message;
 	let size = "regular";
 	if ( content.endsWith( "原图" ) ) {
 		size = "original";
@@ -19,36 +22,42 @@ async function sendAcgnImg( content: string, sendMessage: ( content: Sendable, a
 	}
 	
 	if ( typeof setu === "string" ) {
-		await sendMessage( setu );
-		return;
+		await sendMsg( getTargetInfo( messageData ), setu, client, atUser );
+		return "";
 	}
 	
 	const image: ImgPttElem = segment.image( setu.urls.original || setu.urls.regular, true, 30000 );
 	const imageCq: string = segment.toCqcode( image );
 	
 	const msg = `${ imageCq }\n--------图片来源：Pixiv-------\n标题：${ setu.title }\n作者：${ setu.author }\n作者UID: ${ setu.uid }\n作品ID: ${ setu.pid }`;
-	await sendMessage( msg );
+	return await sendMsg( getTargetInfo( messageData ), msg, client, atUser );
 }
 
-async function sendHumanImg( sendMessage: ( content: Sendable, allowAt?: boolean ) => Promise<void> ) {
+async function sendHumanImg( messageData: Message, client: Client, atUser: boolean ): Promise<string> {
 	if ( !config.humanGirls ) {
-		await sendMessage( 'BOT 持有者已将此服务关闭，无法使用。' );
-		return;
+		await sendMsg( getTargetInfo( messageData ), 'BOT 持有者已将此服务关闭，无法使用。', client, atUser );
+		return "";
 	}
 	// 随机获取一张三次元PC图或者手机图
 	const url: string = await getHumanImgUrlRandom();
 	const image: ImgPttElem = segment.image( url, true, 30000 );
 	const imageCq: string = segment.toCqcode( image );
-	await sendMessage( imageCq );
+	return await sendMsg( getTargetInfo( messageData ), imageCq, client, atUser );
 }
 
-export async function main( { sendMessage, messageData }: InputParameter ): Promise<void> {
+export async function main( { messageData, client, config: botConfig, logger }: InputParameter ): Promise<void> {
 	let content = messageData.raw_message;
+	let messageId: string;
 	if ( content === "真人" ) {
-		await sendHumanImg( sendMessage );
-		return;
+		messageId = await sendHumanImg( messageData, client, botConfig.atUser );
+	} else {
+		messageId = await sendAcgnImg( messageData, client, botConfig.atUser );
 	}
 	
-	await sendAcgnImg( content, sendMessage );
+	if ( messageId && config.recallTime > 0 ) {
+		logger.info( `消息: ${ messageId } 将在${ config.recallTime }秒后撤回.` );
+		await wait( config.recallTime * 1000 );
+		await client.deleteMsg( messageId );
+	}
 }
 

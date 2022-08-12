@@ -54,10 +54,13 @@ proxy: i.pixiv.re
 humanGirls: true
 # 韩小韩API的CDN（由于该站长未开启海外IP的可用，因此需要自行部署CDN来代理他的API，没有域名的可以使用我为你们提供的CDN）
 vvhanCdn: "https://vvhan.hibennett.cn"
+# <recallTime>秒后消息撤回
+recallTime: 0
 ```
 
 ## 更新日志
 
+- 2022/08/12 增加消息延迟撤回配置， `recallTime` 祥见配置。
 - 2022/08/08 增加韩小韩CDN配置来支持海外用户，祥见配置项。
 - 2022/07/28 添加随机获取三次元涩图功能（使用韩小韩的API，海外不可用）。
 - 2022/07/26 添加获取随机涩图功能。
