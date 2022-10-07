@@ -56,6 +56,7 @@ export async function init( bot: BOT ): Promise<PluginSetting> {
 	
 	return {
 		pluginName: "setu-plugin",
+		aliases: config.aliases,
 		cfgList: [ setu ],
 		repo: "BennettChina/setu-plugin"
 	};

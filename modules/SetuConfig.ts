@@ -1,4 +1,5 @@
 import { RefreshCatch } from "@modules/management/refresh";
+import { PluginAlias } from "@modules/plugin";
 
 export default class SetuConfig {
 	public static init = {
@@ -6,7 +7,8 @@ export default class SetuConfig {
 		proxy: "i.pixiv.re",
 		humanGirls: true,
 		vvhanCdn: "",
-		recallTime: 0
+		recallTime: 0,
+		aliases: [ "涩图", "色图" ]
 	};
 	/** 使用启用R18涩图 */
 	public r18: boolean;
@@ -19,12 +21,16 @@ export default class SetuConfig {
 	/** <recallTime>秒后消息撤回 */
 	public recallTime: number;
 	
+	/** 更新使用的别名 */
+	public aliases: string[];
+	
 	constructor( config: any ) {
 		this.r18 = config.r18;
 		this.proxy = config.proxy;
 		this.humanGirls = config.humanGirls;
 		this.vvhanCdn = config.vvhanCdn;
 		this.recallTime = config.recallTime;
+		this.aliases = config.aliases;
 	}
 	
 	public async refresh( config ): Promise<string> {
@@ -34,6 +40,13 @@ export default class SetuConfig {
 			this.humanGirls = config.humanGirls;
 			this.vvhanCdn = config.vvhanCdn;
 			this.recallTime = config.recallTime;
+			for ( let alias of this.aliases ) {
+				delete PluginAlias[alias];
+			}
+			this.aliases = config.aliases;
+			for ( let alias of this.aliases ) {
+				PluginAlias[alias] = "setu-plugin";
+			}
 			return "setu.yml 重新加载完毕";
 		} catch ( error ) {
 			throw <RefreshCatch>{

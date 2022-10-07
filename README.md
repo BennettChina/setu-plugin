@@ -56,10 +56,14 @@ humanGirls: true
 vvhanCdn: "https://vvhan.hibennett.cn"
 # <recallTime>秒后消息撤回
 recallTime: 0
+aliases:
+  - 涩图
+  - 色图 
 ```
 
 ## 更新日志
 
+- 2022/10/07 支持插件的别名更新
 - 2022/08/12 增加消息延迟撤回配置， `recallTime` 祥见配置。
 - 2022/08/08 增加韩小韩CDN配置来支持海外用户，祥见配置项。
 - 2022/07/28 添加随机获取三次元涩图功能（使用韩小韩的API，海外不可用）。
