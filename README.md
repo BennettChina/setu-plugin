@@ -33,12 +33,19 @@ git clone https://gitclone.com/github.com/BennettChina/setu-plugin.git
 权限: 用户 (User)
 
 # 获取一张指定内容的涩图(后面的关键词空格AND条件，｜是OR条件),如果要获取原图请在最后加上原图两字并用空格与之前的参数隔开
+命令: <header> setu 刻晴|甘雨 黑丝|白丝
 命令: <header> setu 刻晴|甘雨 黑丝|白丝 原图
 范围: 群/私聊
 权限: 用户 (User)
 
 # 随机获取一张三次元涩图
 命令: <header> setu 真人
+范围: 群/私聊
+权限: 用户 (User)
+
+# 使用 pid 获取 pixiv 图，默认使用标准图，给原图参数下载原图
+命令: <header> setu 100905772
+命令: <header> setu 100905772 原图
 范围: 群/私聊
 权限: 用户 (User)
 ```
