@@ -34,3 +34,48 @@ export interface LoliconSetu {
 		mini: string
 	};
 }
+
+/**
+ * Pixiv 作品信息
+ *
+ * @error 接口是否正常响应
+ * @message 错误信息
+ * @body 图片信息
+ */
+export interface PixivPages {
+	error: boolean;
+	message: string;
+	body: {
+		width: number;
+		height: number;
+		urls: {
+			original: string;
+			regular: string;
+			small: string;
+			thumb_mini: string;
+		}
+	}[]
+}
+
+export interface MirrorPixivImages {
+	success: boolean;
+	error: string | undefined;
+	id: number;
+	title: string;
+	artist: {
+		id: number;
+		name: string;
+	};
+	multiple: boolean;
+}
+
+export interface MirrorPixivSingleImages extends MirrorPixivImages {
+	original_url: string;
+	original_url_proxy: string;
+}
+
+export interface MirrorPixivMultipleImages extends MirrorPixivImages {
+	original_urls: string[];
+	original_urls_proxy: string[];
+	thumbnails: string[];
+}

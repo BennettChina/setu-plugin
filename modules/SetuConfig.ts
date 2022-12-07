@@ -1,5 +1,6 @@
 import { RefreshCatch } from "@modules/management/refresh";
 import { PluginAlias } from "@modules/plugin";
+import { AxiosProxyConfig } from "axios";
 
 export default class SetuConfig {
 	public static init = {
@@ -8,7 +9,9 @@ export default class SetuConfig {
 		humanGirls: true,
 		vvhanCdn: "",
 		recallTime: 0,
-		aliases: [ "涩图", "色图" ]
+		aliases: [ "涩图", "色图" ],
+		pixiv_cookie: "",
+		pixiv_proxy: false
 	};
 	/** 使用启用R18涩图 */
 	public r18: boolean;
@@ -24,6 +27,11 @@ export default class SetuConfig {
 	/** 更新使用的别名 */
 	public aliases: string[];
 	
+	/** P站查询图片信息时需要的cookie*/
+	public pixiv_cookie: string;
+	
+	public pixiv_proxy: AxiosProxyConfig | false;
+	
 	constructor( config: any ) {
 		this.r18 = config.r18;
 		this.proxy = config.proxy;
@@ -31,6 +39,8 @@ export default class SetuConfig {
 		this.vvhanCdn = config.vvhanCdn;
 		this.recallTime = config.recallTime;
 		this.aliases = config.aliases;
+		this.pixiv_cookie = config.pixiv_cookie;
+		this.pixiv_proxy = config.pixiv_proxy;
 	}
 	
 	public async refresh( config ): Promise<string> {
@@ -47,6 +57,8 @@ export default class SetuConfig {
 			for ( let alias of this.aliases ) {
 				PluginAlias[alias] = "setu-plugin";
 			}
+			this.pixiv_cookie = config.pixiv_cookie;
+			this.pixiv_proxy = config.pixiv_proxy;
 			return "setu.yml 重新加载完毕";
 		} catch ( error ) {
 			throw <RefreshCatch>{

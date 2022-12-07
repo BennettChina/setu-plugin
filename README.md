@@ -57,12 +57,34 @@ vvhanCdn: "https://vvhan.hibennett.cn"
 # <recallTime>秒后消息撤回
 recallTime: 0
 aliases:
-  - 涩图
-  - 色图 
+    - 涩图
+    - 色图
+# pixiv的cookie， 不能直接用脚本获取（因为该站使用了大量的httpOnly的cookie），需要通过F12获取网络请求中的cookie，随便在P站中找一个作品打开
+# 然后在网络请求中找到最后一段是数字的网络请求，拿到cookie值。
+pixiv_cookie: ""
+# 系统代理设置，国内服务器必须设置系统代理，因为访问P站接口必须通过代理否则无法连接。
+# 仅接口使用该代理，图片下载仍使用上面的反代服务，所以不用担心流量问题。
+pixiv_proxy: false
+```
+
+```ts
+// 以下是关于pixiv_proxy 属性的类型定义
+interface AxiosProxyConfig {
+    host: string;
+    port: number;
+    auth?: {
+        username: string;
+        password: string;
+    };
+    protocol?: string;
+}
+
+const puxiv_proxy: AxiosProxyConfig | false = false;
 ```
 
 ## 更新日志
 
+- 2022/12/07 增加通过P站作品ID获取 pixiv 图的功能。
 - 2022/10/07 支持插件的别名更新
 - 2022/08/12 增加消息延迟撤回配置， `recallTime` 祥见配置。
 - 2022/08/08 增加韩小韩CDN配置来支持海外用户，祥见配置项。
