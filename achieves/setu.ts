@@ -80,7 +80,9 @@ async function sendPixivImg( {
 		const img: ImgPttElem = segment.image( url, true, 30000 );
 		const node: FakeMessage = {
 			user_id: botConfig.number,
-			message: img
+			message: img,
+			nickname: client.nickname,
+			time: Date.now()
 		}
 		return node;
 	} )
