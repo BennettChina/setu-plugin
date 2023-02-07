@@ -86,7 +86,7 @@ interface AxiosProxyConfig {
     protocol?: string;
 }
 
-const puxiv_proxy: AxiosProxyConfig | false = false;
+const pixiv_proxy: AxiosProxyConfig | false = false;
 ```
 
 ## 更新日志

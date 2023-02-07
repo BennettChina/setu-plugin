@@ -27,7 +27,7 @@ async function sendAcgnImg( messageData: Message, client: Client, atUser: boolea
 		return "";
 	}
 	
-	const image: ImgPttElem = segment.image( setu.urls.original || setu.urls.regular, true, 30000 );
+	const image: ImgPttElem = segment.image( setu.urls.original || setu.urls.regular, true, 60 );
 	const imageCq: string = segment.toCqcode( image );
 	
 	const msg = `${ imageCq }\n--------图片来源：Pixiv-------\n标题：${ setu.title }\n作者：${ setu.author }\n作者UID: ${ setu.uid }\n作品ID: ${ setu.pid }`;
@@ -41,7 +41,7 @@ async function sendHumanImg( messageData: Message, client: Client, atUser: boole
 	}
 	// 随机获取一张三次元PC图或者手机图
 	const url: string = await getHumanImgUrlRandom();
-	const image: ImgPttElem = segment.image( url, true, 30000 );
+	const image: ImgPttElem = segment.image( url, true, 60 );
 	const imageCq: string = segment.toCqcode( image );
 	return await sendMsg( getTargetInfo( messageData ), imageCq, client, atUser );
 }
@@ -70,14 +70,14 @@ async function sendPixivImg( {
 		if ( config.proxy ) {
 			url = url.replace( "i.pximg.net", config.proxy );
 		}
-		const img: ImgPttElem = segment.image( url, true, 30000 );
+		const img: ImgPttElem = segment.image( url, true, 60 );
 		return await sendMsg( getTargetInfo( messageData ), img, client, botConfig.atUser );
 	}
 	const content: FakeMessage[] = urls.map( url => {
 		if ( config.proxy ) {
 			url = url.replace( "i.pximg.net", config.proxy );
 		}
-		const img: ImgPttElem = segment.image( url, true, 30000 );
+		const img: ImgPttElem = segment.image( url, true, 60 );
 		const node: FakeMessage = {
 			user_id: botConfig.number,
 			message: img,
