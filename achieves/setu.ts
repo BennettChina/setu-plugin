@@ -1,13 +1,12 @@
-import { InputParameter, Order } from "@modules/command";
+import { InputParameter } from "@modules/command";
 import { getHumanImgUrlRandom, getPixivImages, getSetu } from "#setu-plugin/util/api";
 import { LoliconSetu } from "#setu-plugin/types/type";
-import { Client, FakeMessage, ImgPttElem, Ret, segment, XmlElem } from "oicq";
+import { Forwardable, ImageElem, MessageRet, segment, XmlElem } from "icqq";
 import { config } from "#setu-plugin/init";
-import { getTargetInfo, sendMsg, wait } from "#setu-plugin/util/utils";
-import { isPrivateMessage, Message } from "@modules/message";
-import bot from "ROOT";
+import { wait } from "#setu-plugin/util/utils";
+import { isPrivateMessage } from "@modules/message";
 
-async function sendAcgnImg( messageData: Message, client: Client, atUser: boolean ): Promise<string> {
+async function sendAcgnImg( { messageData, sendMessage }: InputParameter ): Promise<string> {
 	let content = messageData.raw_message;
 	let size = "regular";
 	if ( content.endsWith( "原图" ) ) {
@@ -23,27 +22,27 @@ async function sendAcgnImg( messageData: Message, client: Client, atUser: boolea
 	}
 	
 	if ( typeof setu === "string" ) {
-		await sendMsg( getTargetInfo( messageData ), setu, client, atUser );
+		await sendMessage( setu );
 		return "";
 	}
 	
-	const image: ImgPttElem = segment.image( setu.urls.original || setu.urls.regular, true, 60 );
-	const imageCq: string = segment.toCqcode( image );
+	const image: ImageElem = segment.image( setu.urls.original || setu.urls.regular, true, 60 );
 	
-	const msg = `${ imageCq }\n--------图片来源：Pixiv-------\n标题：${ setu.title }\n作者：${ setu.author }\n作者UID: ${ setu.uid }\n作品ID: ${ setu.pid }`;
-	return await sendMsg( getTargetInfo( messageData ), msg, client, atUser );
+	const msg = `\n--------图片来源：Pixiv-------\n标题：${ setu.title }\n作者：${ setu.author }\n作者UID: ${ setu.uid }\n作品ID: ${ setu.pid }`;
+	const { message_id } = await sendMessage( [ image, msg ] );
+	return message_id;
 }
 
-async function sendHumanImg( messageData: Message, client: Client, atUser: boolean ): Promise<string> {
+async function sendHumanImg( { sendMessage }: InputParameter ): Promise<string> {
 	if ( !config.humanGirls ) {
-		await sendMsg( getTargetInfo( messageData ), 'BOT 持有者已将此服务关闭，无法使用。', client, atUser );
+		await sendMessage( 'BOT 持有者已将此服务关闭，无法使用。' );
 		return "";
 	}
 	// 随机获取一张三次元PC图或者手机图
 	const url: string = await getHumanImgUrlRandom();
-	const image: ImgPttElem = segment.image( url, true, 60 );
-	const imageCq: string = segment.toCqcode( image );
-	return await sendMsg( getTargetInfo( messageData ), imageCq, client, atUser );
+	const image: ImageElem = segment.image( url, true, 60 );
+	const { message_id } = await sendMessage( image );
+	return message_id;
 }
 
 async function sendPixivImg( {
@@ -51,7 +50,7 @@ async function sendPixivImg( {
 	                             config: botConfig,
 	                             messageData,
 	                             sendMessage
-                             }: InputParameter, pixivId: string, size?: string ) {
+                             }: InputParameter, pixivId: string, size?: string ): Promise<string> {
 	let urls: string[];
 	try {
 		urls = await getPixivImages( pixivId, size );
@@ -70,15 +69,16 @@ async function sendPixivImg( {
 		if ( config.proxy ) {
 			url = url.replace( "i.pximg.net", config.proxy );
 		}
-		const img: ImgPttElem = segment.image( url, true, 60 );
-		return await sendMsg( getTargetInfo( messageData ), img, client, botConfig.atUser );
+		const img: ImageElem = segment.image( url, true, 60 );
+		const { message_id } = await sendMessage( img );
+		return message_id;
 	}
-	const content: FakeMessage[] = urls.map( url => {
+	const content: Forwardable[] = urls.map( url => {
 		if ( config.proxy ) {
 			url = url.replace( "i.pximg.net", config.proxy );
 		}
-		const img: ImgPttElem = segment.image( url, true, 60 );
-		const node: FakeMessage = {
+		const img: ImageElem = segment.image( url, true, 60 );
+		const node: Forwardable = {
 			user_id: botConfig.number,
 			message: img,
 			nickname: client.nickname,
@@ -86,31 +86,26 @@ async function sendPixivImg( {
 		}
 		return node;
 	} )
-	const forwardMessage: Ret<XmlElem> = await client.makeForwardMsg( content, isPrivateMessage( messageData ) );
-	if ( forwardMessage.status === 'ok' ) {
-		return await sendMsg( getTargetInfo( messageData ), forwardMessage.data, client, false );
-	} else {
-		const CALL = <Order>bot.command.getSingle( "adachi.call", await bot.auth.get( messageData.user_id ) );
-		const appendMsg = CALL ? `私聊使用 ${ CALL.getHeaders()[0] } ` : "";
-		await sendMessage( `转发消息生成错误，请${ appendMsg }联系持有者进行反馈` );
-		return ""
-	}
+	const forwardMessage: XmlElem = await client.makeForwardMsg( content, isPrivateMessage( messageData ) );
+	const { message_id }: MessageRet = await sendMessage( forwardMessage );
+	return message_id;
 }
 
+
 export async function main( i: InputParameter ): Promise<void> {
-	const { messageData, client, config: botConfig, logger }: InputParameter = i;
+	const { messageData, client, logger }: InputParameter = i;
 	const reg: RegExp = /^(?<pixivId>\d+)\s*(?<size>原图)?$/;
 	let content = messageData.raw_message;
 	let messageId: string;
 	if ( content === "真人" ) {
-		messageId = await sendHumanImg( messageData, client, botConfig.atUser );
+		messageId = await sendHumanImg( i );
 	} else if ( reg.test( content ) ) {
 		let exec: RegExpExecArray | null = reg.exec( content );
 		const pixivId: string = exec!.groups!.pixivId;
 		const size: string | undefined = exec?.groups?.size;
 		messageId = await sendPixivImg( i, pixivId, size );
 	} else {
-		messageId = await sendAcgnImg( messageData, client, botConfig.atUser );
+		messageId = await sendAcgnImg( i );
 	}
 	
 	if ( messageId && config.recallTime > 0 ) {

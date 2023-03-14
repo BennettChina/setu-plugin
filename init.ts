@@ -18,9 +18,7 @@ const setu: OrderConfig = {
 		"有参数 获取一张该关键词风格的涩图，多个关键词以空格隔开（空格AND条件，｜是OR条件）\n" +
 		"比如: #setu 萝莉｜少女 白丝｜黑丝\n" +
 		"如果要获取原图请在最后加上原图两字并用空格与之前的参数隔开\n" +
-		"获取三次元美女图可用#setu 真人\n" +
-		"使用作品ID获取Pixiv图，也可以加{原图}参数获取图片的原图，默认使用标准图，示例：\n" +
-		"#setu 103007479 原图"
+		"获取三次元美女图可用#setu 真人"
 }
 
 function loadConfig( file: FileManagement ): SetuConfig {
@@ -60,6 +58,10 @@ export async function init( bot: BOT ): Promise<PluginSetting> {
 		pluginName: "setu-plugin",
 		aliases: config.aliases,
 		cfgList: [ setu ],
-		repo: "BennettChina/setu-plugin"
+		repo: {
+			owner: "BennettChina",
+			repoName: "setu-plugin",
+			ref: "icqq"
+		}
 	};
 }
