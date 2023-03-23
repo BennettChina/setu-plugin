@@ -91,6 +91,7 @@ const pixiv_proxy: AxiosProxyConfig | false = false;
 
 ## 更新日志
 
+- 2023/03/23 ⚠️适配主项目 `2.9.3` 版本 ⚠️。
 - 2022/12/07 增加通过P站作品ID获取 pixiv 图的功能。
 - 2022/10/07 支持插件的别名更新
 - 2022/08/12 增加消息延迟撤回配置， `recallTime` 祥见配置。

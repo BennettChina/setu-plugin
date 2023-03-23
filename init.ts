@@ -61,7 +61,7 @@ export async function init( bot: BOT ): Promise<PluginSetting> {
 		repo: {
 			owner: "BennettChina",
 			repoName: "setu-plugin",
-			ref: "icqq"
+			ref: "master"
 		}
 	};
 }
