@@ -45,12 +45,12 @@ async function sendHumanImg( { sendMessage }: InputParameter ): Promise<string> 
 	return message_id;
 }
 
-async function sendPixivImg( {
-	                             client,
-	                             config: botConfig,
-	                             messageData,
-	                             sendMessage
-                             }: InputParameter, pixivId: string, size?: string ): Promise<string> {
+export async function sendPixivImg( {
+	                                    client,
+	                                    config: botConfig,
+	                                    messageData,
+	                                    sendMessage
+                                    }: InputParameter, pixivId: string, size?: string ): Promise<string> {
 	let urls: string[];
 	try {
 		urls = await getPixivImages( pixivId, size );

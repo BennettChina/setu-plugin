@@ -48,6 +48,21 @@ git clone https://gitclone.com/github.com/BennettChina/setu-plugin.git
 命令: <header> setu 100905772 原图
 范围: 群/私聊
 权限: 用户 (User)
+
+# 根据关键字搜索P站图
+命令: <header> search 花嫁 刻晴
+# 关键词后如果有筛选/排序条件则需要在关键词后加。号隔开，条件包括：
+# 时间：近<number>[日天月年]
+# 模式：全部｜全年龄｜r18
+# 排序：升序｜降序｜热度，热度需要有P站的VIP才能用。
+命令: <header> search 花嫁 刻晴。升序&全年龄&近2月
+范围: 群/私聊
+权限: 用户 (User)
+
+# 根据搜索结果的序号（1-60）获取该帖子的所有图(pid的方式依旧使用 setu 指令)
+命令: <header> gs 2
+范围: 群/私聊
+权限: 用户 (User)
 ```
 
 ## 插件配置
@@ -91,6 +106,7 @@ const pixiv_proxy: AxiosProxyConfig | false = false;
 
 ## 更新日志
 
+- 2023/04/08 增加搜索P站图 `search` 指令以及根据序号获取搜索结果的 `gs` 指令。
 - 2023/03/23 ⚠️适配主项目 `2.9.3` 版本 ⚠️。
 - 2022/12/07 增加通过P站作品ID获取 pixiv 图的功能。
 - 2022/10/07 支持插件的别名更新

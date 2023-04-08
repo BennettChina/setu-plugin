@@ -1,0 +1,121 @@
+.gCRmsl {
+	margin: 40px auto 0;
+	padding: 0 0 64px;
+}
+
+.kYtoqc {
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+}
+
+.kKBslM {
+	font-size: 1rem;
+	line-height: calc(1em + 8px);
+	text-decoration: none;
+	border: none;
+	outline: none;
+	touch-action: manipulation;
+	user-select: none;
+	transition: box-shadow 0.2s ease 0s, color 0.2s ease 0s, background 0.2s ease 0s, opacity 0.2s ease 0s;
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	box-sizing: content-box;
+	min-width: 24px;
+	min-height: 24px;
+	padding: 8px;
+	cursor: pointer;
+	font-weight: bold;
+	transform: translateZ(0);
+	border-radius: 48px;
+	background: transparent;
+	color: rgb(133, 133, 133);
+}
+
+.cQdtNS[aria-current] {
+	background-color: rgba(0, 0, 0, 0.88);
+	color: rgb(255, 255, 255);
+}
+
+.cQdtNS {
+	font-size: 1rem;
+	line-height: calc(1em + 8px);
+	text-decoration: none;
+	border: none;
+	outline: none;
+	touch-action: manipulation;
+	user-select: none;
+	transition: box-shadow 0.2s ease 0s, color 0.2s ease 0s, background 0.2s ease 0s, opacity 0.2s ease 0s;
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	box-sizing: content-box;
+	min-width: 24px;
+	min-height: 24px;
+	padding: 8px;
+	cursor: pointer;
+	font-weight: bold;
+	transform: translateZ(0);
+	border-radius: 48px;
+	background: transparent;
+	color: rgb(133, 133, 133);
+}
+
+.iiDpnk.iiDpnk {
+	color: rgb(133, 133, 133);
+	background: none;
+}
+
+.fivNSm {
+	stroke: none;
+	fill: currentcolor;
+	width: 24px;
+	height: 24px;
+	line-height: 0;
+	font-size: 0;
+	vertical-align: middle;
+}
+
+.kHhIF {
+	font-size: 1rem;
+	line-height: calc(1em + 8px);
+	text-decoration: none;
+	border: none;
+	outline: none;
+	touch-action: manipulation;
+	user-select: none;
+	transition: box-shadow 0.2s ease 0s, color 0.2s ease 0s, background 0.2s ease 0s, opacity 0.2s ease 0s;
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	box-sizing: content-box;
+	min-width: 24px;
+	min-height: 24px;
+	padding: 8px;
+	cursor: pointer;
+	font-weight: bold;
+	transform: translateZ(0);
+	border-radius: 48px;
+	background: transparent;
+	color: rgb(133, 133, 133);
+}
+
+._2PQx_mZ {
+	stroke: currentColor;
+}
+
+._3mXeVRO {
+	stroke: #666;
+	fill: none;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+}

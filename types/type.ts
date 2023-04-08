@@ -79,3 +79,56 @@ export interface MirrorPixivMultipleImages extends MirrorPixivImages {
 	original_urls_proxy: string[];
 	thumbnails: string[];
 }
+
+
+export interface TitleCaptionTranslation {
+	workTitle?: any;
+	workCaption?: any;
+}
+
+export interface PixivImage {
+	// 作品ID
+	id: string;
+	// 作品标题
+	title: string;
+	illustType: number;
+	// 标志是否是R-18
+	xRestrict: number;
+	restrict: number;
+	sl: number;
+	// 缩略图
+	url: string;
+	description: string;
+	tags: string[];
+	// 作者的ID
+	userId: string;
+	// 作者名称
+	userName: string;
+	// 原始图的宽度
+	width: number;
+	// 原始图的高度
+	height: number;
+	// 作品页拥有的作品数量
+	pageCount: number;
+	isBookmarkable: boolean;
+	bookmarkData?: any;
+	alt: string;
+	titleCaptionTranslation: TitleCaptionTranslation;
+	createDate: string;
+	updateDate: string;
+	isUnlisted: boolean;
+	isMasked: boolean;
+	// 是否AI图（1：否，2：是）
+	aiType: number;
+	// 作者的头像缩略图
+	profileImageUrl: string;
+}
+
+export interface PixivIllustData {
+	data: PixivImage[];
+	total: number;
+	bookmarkRanges: {
+		min?: number;
+		max?: number;
+	}[]
+}

@@ -5,6 +5,7 @@ import {
 	MirrorPixivImages,
 	MirrorPixivMultipleImages,
 	MirrorPixivSingleImages,
+	PixivIllustData,
 	PixivPages
 } from "#setu-plugin/types/type";
 import { config } from "#setu-plugin/init";
@@ -13,7 +14,8 @@ const API = {
 	lolicon: "https://api.lolicon.app/setu/v2",
 	girls_mobile: "https://api.vvhan.com/api/mobil.girl",
 	girls_pc: "https://api.vvhan.com/api/girl",
-	pixiv_image_pages: "https://www.pixiv.net/ajax/illust/$/pages?lang=zh"
+	pixiv_image_pages: "https://www.pixiv.net/ajax/illust/$/pages?lang=zh",
+	pixiv_search: "https://www.pixiv.net/ajax/search/illustrations/$",
 }
 
 export async function getSetu( tags: string[] | undefined = undefined, size: string = "regular" ): Promise<string | LoliconSetu> {
@@ -176,6 +178,65 @@ export async function getMirrorPixivImages( pixivId: string, size?: string ): Pr
 				reject( '获取图片失败请前往控制台查看错误信息。' );
 			} else {
 				bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败，${ reason }` );
+				reject( '获取图片失败请前往控制台查看错误信息。' );
+			}
+		} )
+	} );
+}
+
+
+export async function searchPixivImages( keyword: string, order: string = 'date_d', mode: string = 'all', p: number = 1, scd?: string, ecd?: string ): Promise<PixivIllustData> {
+	return new Promise( ( resolve, reject ) => {
+		const encodeKeyword = encodeURI( keyword );
+		axios.get( API.pixiv_search.replace( "$", encodeKeyword ), {
+			params: {
+				word: keyword,
+				order,
+				mode,
+				p,
+				s_mode: "s_tag",
+				type: "illust",
+				lang: "zh",
+				version: "c1aefca1551cb49622c0f05d3474af5f813f4f5e",
+				scd,
+				ecd
+			},
+			timeout: 5000,
+			headers: {
+				"referer": `https://www.pixiv.net/tags/${ encodeKeyword }/illustrations?s_mode=s_tag`,
+				"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+				"cookie": config.pixiv_cookie,
+			},
+			proxy: config.pixiv_proxy
+		} ).then( response => {
+			if ( response.data["error"] ) {
+				reject( "查询pixiv作品异常: " + response.data["message"] );
+				return;
+			}
+			
+			const pixivInfo: PixivIllustData = response.data["body"]["illust"];
+			if ( config.proxy ) {
+				pixivInfo.data.forEach( value => {
+					value.url = value.url.replace( "i.pximg.net", config.proxy );
+					value.profileImageUrl = value.profileImageUrl.replace( "i.pximg.net", config.proxy );
+				} )
+			}
+			resolve( pixivInfo );
+		} ).catch( reason => {
+			if ( axios.isAxiosError( reason ) ) {
+				const err = <AxiosError>reason;
+				if ( err.response?.data ) {
+					bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败(axios:origin)，reason: ${ err.response.data.message }` );
+					if ( err.response.data.message === "尚无权限浏览该作品" ) {
+						bot.logger.error( ` [setu] - pixiv 作品[KEYWORD: ${ keyword }]可能不存在或者cookie失效，请自行确认是否是cookie失效。` );
+					}
+					reject( err.response.data.message );
+					return;
+				}
+				bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败(axios)，reason: ${ err.message }` );
+				reject( '获取图片失败请前往控制台查看错误信息。' );
+			} else {
+				bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败，${ reason }` );
 				reject( '获取图片失败请前往控制台查看错误信息。' );
 			}
 		} )
