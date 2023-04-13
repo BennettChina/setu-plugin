@@ -52,7 +52,7 @@ export async function getSetu( tags: string[] | undefined = undefined, size: str
 				bot.logger.error( ` [setu] - 获取随机涩图失败，reason: ${ err.message }` );
 				resolve( '获取涩图失败请前往控制台查看错误信息。' );
 			} else {
-				bot.logger.error( ` [setu] - 获取随机涩图失败，${ reason }` );
+				bot.logger.error( ` [setu] - 获取随机涩图失败`, reason );
 				resolve( '获取涩图失败请前往控制台查看错误信息。' );
 			}
 		} )
@@ -96,7 +96,7 @@ export async function getHumanImgUrlRandom(): Promise<string> {
 					bot.logger.error( ` [setu] - 获取随机三次元涩图失败，reason: ${ err.message }` );
 					reject( '获取涩图失败请前往控制台查看错误信息。' );
 				} else {
-					bot.logger.error( ` [setu] - 获取随机三次元涩图失败，${ reason }` );
+					bot.logger.error( ` [setu] - 获取随机三次元涩图失败`, reason );
 					reject( '获取涩图失败请前往控制台查看错误信息。' );
 				}
 			} )
@@ -125,7 +125,8 @@ export async function getPixivImages( pixivId: string, size?: string ): Promise<
 			if ( axios.isAxiosError( reason ) ) {
 				const err = <AxiosError>reason;
 				if ( err.response?.data ) {
-					bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败，reason: ${ err.response.data.message }` );
+					bot.logger.debug( err.message, err.response.data );
+					bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败，data reason: ${ err.response.data.message }` );
 					if ( err.response.data.message === "尚无权限浏览该作品" ) {
 						bot.logger.error( ` [setu] - pixiv 作品[${ pixivId }]可能不存在或者cookie失效，请自行确认是否是cookie失效。` );
 					}
@@ -135,7 +136,7 @@ export async function getPixivImages( pixivId: string, size?: string ): Promise<
 				bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败，reason: ${ err.message }` );
 				reject( '获取图片失败请前往控制台查看错误信息。' );
 			} else {
-				bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败，${ reason }` );
+				bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败`, reason );
 				reject( '获取图片失败请前往控制台查看错误信息。' );
 			}
 		} )
@@ -226,6 +227,7 @@ export async function searchPixivImages( keyword: string, order: string = 'date_
 			if ( axios.isAxiosError( reason ) ) {
 				const err = <AxiosError>reason;
 				if ( err.response?.data ) {
+					bot.logger.debug( err.message, err.response.data );
 					bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败(axios:origin)，reason: ${ err.response.data.message }` );
 					if ( err.response.data.message === "尚无权限浏览该作品" ) {
 						bot.logger.error( ` [setu] - pixiv 作品[KEYWORD: ${ keyword }]可能不存在或者cookie失效，请自行确认是否是cookie失效。` );
@@ -236,7 +238,7 @@ export async function searchPixivImages( keyword: string, order: string = 'date_
 				bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败(axios)，reason: ${ err.message }` );
 				reject( '获取图片失败请前往控制台查看错误信息。' );
 			} else {
-				bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败，${ reason }` );
+				bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败`, reason );
 				reject( '获取图片失败请前往控制台查看错误信息。' );
 			}
 		} )
