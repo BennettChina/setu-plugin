@@ -129,6 +129,8 @@ export async function getPixivImages( pixivId: string, size?: string ): Promise<
 					bot.logger.error( ` [setu] - 查询 pixiv 作品[${ pixivId }]的图片信息失败，data reason: ${ err.response.data.message }` );
 					if ( err.response.data.message === "尚无权限浏览该作品" ) {
 						bot.logger.error( ` [setu] - pixiv 作品[${ pixivId }]可能不存在或者cookie失效，请自行确认是否是cookie失效。` );
+					} else if ( err.response.data.message === '出现了未知错误' ) {
+						bot.logger.error( `[setu] 未知错误可能与Cookie有关，可尝试更换Cookie。` )
 					}
 					reject( err.response.data.message );
 					return;
@@ -231,6 +233,8 @@ export async function searchPixivImages( keyword: string, order: string = 'date_
 					bot.logger.error( ` [setu] - 查询 pixiv 作品[KEYWORD: ${ keyword }]的图片信息失败(axios:origin)，reason: ${ err.response.data.message }` );
 					if ( err.response.data.message === "尚无权限浏览该作品" ) {
 						bot.logger.error( ` [setu] - pixiv 作品[KEYWORD: ${ keyword }]可能不存在或者cookie失效，请自行确认是否是cookie失效。` );
+					} else if ( err.response.data.message === '出现了未知错误' ) {
+						bot.logger.error( `[setu] 未知错误可能与Cookie有关，可尝试更换Cookie。` )
 					}
 					reject( err.response.data.message );
 					return;

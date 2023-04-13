@@ -1,9 +1,9 @@
 import { InputParameter } from "@modules/command";
 import { isPrivateMessage } from "@modules/message";
 import { PixivIllustData } from "#setu-plugin/types/type";
-import { sendPixivImg } from "#setu-plugin/achieves/setu";
 import { config } from "#setu-plugin/init";
 import { wait } from "#setu-plugin/util/utils";
+import { sendPixivImg } from "#setu-plugin/achieves/pixiv";
 
 export async function main( i: InputParameter ): Promise<void> {
 	const { sendMessage, messageData, redis, logger, client } = i;

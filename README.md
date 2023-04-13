@@ -39,13 +39,13 @@ git clone https://gitclone.com/github.com/BennettChina/setu-plugin.git
 权限: 用户 (User)
 
 # 随机获取一张三次元涩图
-命令: <header> setu 真人
+命令: <header> 3setu
 范围: 群/私聊
 权限: 用户 (User)
 
 # 使用 pid 获取 pixiv 图，默认使用标准图，给原图参数下载原图
-命令: <header> setu 100905772
-命令: <header> setu 100905772 原图
+命令: <header> pixiv 100905772
+命令: <header> pixiv 100905772 原图
 范围: 群/私聊
 权限: 用户 (User)
 
@@ -72,8 +72,6 @@ git clone https://gitclone.com/github.com/BennettChina/setu-plugin.git
 r18: false
 # P站的反代服务，详情见 https://api.lolicon.app/#/setu?id=proxy
 proxy: i.pixiv.re
-# 是否开启发送三次元涩图的功能 (韩小韩的API，海外不可用)
-humanGirls: true
 # 韩小韩API的CDN（由于该站长未开启海外IP的可用，因此需要自行部署CDN来代理他的API，没有域名的可以使用我为你们提供的CDN）
 vvhanCdn: "https://vvhan.hibennett.cn"
 # <recallTime>秒后消息撤回
@@ -106,6 +104,7 @@ const pixiv_proxy: AxiosProxyConfig | false = false;
 
 ## 更新日志
 
+- 2023/04/13 美女图、pid获取P站图功能拆分出独立的指令 `3setu`、`pixiv`；移除 `humanGirls` 配置。
 - 2023/04/08 增加搜索P站图 `search` 指令以及根据序号获取搜索结果的 `gs` 指令。
 - 2023/03/23 ⚠️适配主项目 `2.9.3` 版本 ⚠️。
 - 2022/12/07 增加通过P站作品ID获取 pixiv 图的功能。

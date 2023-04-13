@@ -13,7 +13,7 @@ export let render: Renderer;
 const setu: OrderConfig = {
 	type: "order",
 	cmdKey: "bennett-setu",
-	desc: [ "获取一张涩图", "(关键词)" ],
+	desc: [ "获取一张涩图", "(关键词) (原图)" ],
 	headers: [ "setu" ],
 	regexps: [ ".*" ],
 	main: "achieves/setu",
@@ -21,8 +21,27 @@ const setu: OrderConfig = {
 		"无参数 随机获取一张图片\n" +
 		"有参数 获取一张该关键词风格的涩图，多个关键词以空格隔开（空格AND条件，｜是OR条件）\n" +
 		"比如: #setu 萝莉｜少女 白丝｜黑丝\n" +
-		"如果要获取原图请在最后加上原图两字并用空格与之前的参数隔开\n" +
-		"获取三次元美女图可用#setu 真人"
+		"如果要获取原图请在最后加上原图两字并用空格与之前的参数隔开\n"
+}
+
+const setu_human: OrderConfig = {
+	type: "order",
+	cmdKey: "bennett-setu-human",
+	desc: [ "获取美女图", "" ],
+	headers: [ "3dsetu" ],
+	regexps: [],
+	main: "achieves/setu_human",
+	detail: "随机获取一张三次元美女图"
+}
+
+const pixiv: OrderConfig = {
+	type: "order",
+	cmdKey: "bennett-pixiv",
+	desc: [ "获取P站图", "[pixiv_id] (原图)" ],
+	headers: [ "pixiv" ],
+	regexps: [ "\\d+", "(原图)?" ],
+	main: "achieves/pixiv",
+	detail: "根据PixivID获取P站图"
 }
 
 const search: OrderConfig = {
@@ -90,7 +109,7 @@ export async function init( bot: BOT ): Promise<PluginSetting> {
 	return {
 		pluginName: "setu-plugin",
 		aliases: config.aliases,
-		cfgList: [ setu, search, get_search ],
+		cfgList: [ setu, setu_human, pixiv, search, get_search ],
 		repo: {
 			owner: "BennettChina",
 			repoName: "setu-plugin",
