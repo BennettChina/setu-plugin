@@ -2,7 +2,7 @@ import { InputParameter } from "@modules/command";
 import { config } from "#setu-plugin/init";
 import { wait } from "#setu-plugin/util/utils";
 import { getPixivImages } from "#setu-plugin/util/api";
-import { Forwardable, ImageElem, MessageRet, segment, XmlElem } from "icqq";
+import { Forwardable, ImageElem, MessageRet, segment } from "icqq";
 import { isPrivateMessage } from "@modules/message";
 
 export async function sendPixivImg( {
@@ -46,7 +46,7 @@ export async function sendPixivImg( {
 		}
 		return node;
 	} )
-	const forwardMessage: XmlElem = await client.makeForwardMsg( content, isPrivateMessage( messageData ) );
+	const forwardMessage = await client.makeForwardMsg( content, isPrivateMessage( messageData ) );
 	const { message_id }: MessageRet = await sendMessage( forwardMessage );
 	return message_id;
 }
