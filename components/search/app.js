@@ -19,25 +19,10 @@ const template = `
 import HeaderTab from "../header/tab.js";
 import PageNavigation from "../page/page_navigation.js";
 import Item from "./item.js";
+import request from "../../assets/js/http.js";
+import { urlParamsGet } from "../../assets/js/url.js";
 
 const { defineComponent, toRefs, reactive } = Vue;
-
-function parseURL( url ) {
-	let urlParams = url.substring( 1 ).split( "&" );
-	let result = {};
-	for ( let p of urlParams ) {
-		const [ key, value ] = p.split( "=" );
-		result[key] = value;
-	}
-	return result;
-}
-
-function request( url ) {
-	const Http = new XMLHttpRequest();
-	Http.open( "GET", url, false );
-	Http.send();
-	return JSON.parse( Http.responseText );
-}
 
 export default defineComponent( {
 	name: "App",
@@ -50,10 +35,10 @@ export default defineComponent( {
 	setup() {
 		// 每页60条数据
 		const pageSize = 60;
-		const { qq, orderType, currentPage } = parseURL( location.search );
-		const current = parseInt( currentPage );
+		const { qq, orderType, currentPage } = urlParamsGet( location.href );
+		const current = parseInt( currentPage ) || 1;
 		const state = reactive( {
-			orderType,
+			orderType: orderType || "date_d",
 			page: {
 				currentPage: current,
 				hasPrevious: current > 1,
@@ -64,14 +49,11 @@ export default defineComponent( {
 			},
 			data: {}
 		} );
-		const data = request( `/api/search?qq=${ qq }` );
-		console.log( data )
+		const data = request( `/search?qq=${ qq }` );
 		state.page.total = data.total;
 		state.page.pages = Math.ceil( data.total / pageSize );
 		state.page.hasNext = current < state.page.pages;
 		state.data = data.data;
-		console.log( '--------state----------' )
-		console.log( state );
 		return {
 			...toRefs( state )
 		}

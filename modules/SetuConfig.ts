@@ -1,9 +1,26 @@
-import { RefreshCatch } from "@modules/management/refresh";
-import { PluginAlias } from "@modules/plugin";
 import { AxiosProxyConfig } from "axios";
 
-export default class SetuConfig {
-	public static init = {
+export interface ISetuConfig {
+	/** 使用启用R18涩图 */
+	r18: boolean;
+	/** pixiv.net站的代理地址 */
+	proxy: string;
+	/** api.vvhan.com站的代理地址 */
+	vvhanCdn: string;
+	/** <recallTime>秒后消息撤回 */
+	recallTime: number;
+	
+	/** 更新使用的别名 */
+	aliases: string[];
+	
+	/** P站查询图片信息时需要的cookie*/
+	pixiv_cookie: string;
+	
+	pixiv_proxy: AxiosProxyConfig | false;
+}
+
+export default class SetuConfig implements ISetuConfig {
+	public static init: ISetuConfig = {
 		r18: false,
 		proxy: "i.pixiv.re",
 		vvhanCdn: "",
@@ -37,29 +54,5 @@ export default class SetuConfig {
 		this.aliases = config.aliases;
 		this.pixiv_cookie = config.pixiv_cookie;
 		this.pixiv_proxy = config.pixiv_proxy;
-	}
-	
-	public async refresh( config ): Promise<string> {
-		try {
-			this.r18 = config.r18;
-			this.proxy = config.proxy;
-			this.vvhanCdn = config.vvhanCdn;
-			this.recallTime = config.recallTime;
-			for ( let alias of this.aliases ) {
-				delete PluginAlias[alias];
-			}
-			this.aliases = config.aliases;
-			for ( let alias of this.aliases ) {
-				PluginAlias[alias] = "setu-plugin";
-			}
-			this.pixiv_cookie = config.pixiv_cookie;
-			this.pixiv_proxy = config.pixiv_proxy;
-			return "setu.yml 重新加载完毕";
-		} catch ( error ) {
-			throw <RefreshCatch>{
-				log: ( <Error>error ).stack,
-				msg: "setu.yml 重新加载失败，请前往控制台查看日志"
-			};
-		}
 	}
 }

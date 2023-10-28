@@ -1,0 +1,10 @@
+{
+  "name" : "setu-plugin",
+  "author" : "Bennett",
+  "private" : true,
+  "license" : "MIT",
+  "version" : "2.0.0",
+  "description" : "本项目为 SilveryStar/Adachi-BOT 衍生插件，用于获取涩图。",
+  "dependencies" : {
+  }
+}

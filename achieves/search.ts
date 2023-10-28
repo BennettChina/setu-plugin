@@ -1,10 +1,7 @@
-import { InputParameter } from "@modules/command";
+import { InputParameter } from "@/modules/command";
 import { searchPixivImages } from "../util/api";
 import { PixivIllustData } from "../types/type";
-import { isPrivateMessage } from "@modules/message";
-import { config, render } from "#setu-plugin/init";
-import { Sendable } from "icqq";
-import { RenderResult } from "@modules/renderer";
+import { config, render } from "#/setu-plugin/init";
 import moment from "moment";
 
 export async function main( { sendMessage, messageData, logger, redis }: InputParameter ): Promise<void> {
@@ -14,7 +11,7 @@ export async function main( { sendMessage, messageData, logger, redis }: InputPa
 		return;
 	}
 	rawMessage = rawMessage.includes( "。" ) ? rawMessage : rawMessage + "。";
-	const qq: number = isPrivateMessage( messageData ) ? messageData.from_id : messageData.sender.user_id;
+	const qq: number = messageData.user_id;
 	const reg = /(?<keywords>.+)。(&?\s*(?<order>升序|降序|热度))?(&?\s*(?<mode>全年龄|r18|全部))?(&?\s*(?<page>\d+))?(&?\s*(近(?<date>\d+)(?<unit>[日天月年])))?/;
 	const exec: RegExpMatchArray | null = reg.exec( rawMessage );
 	const keywords: string = exec?.groups?.keywords!;
@@ -65,7 +62,7 @@ export async function main( { sendMessage, messageData, logger, redis }: InputPa
 		return;
 	}
 	
-	const renderResult: RenderResult = await render.asSegment( "/search_result.html", {
+	const renderResult = await render.asSegment( "/search_result.html", {
 		"qq": qq,
 		"orderType": order,
 		"currentPage": p
@@ -77,7 +74,7 @@ export async function main( { sendMessage, messageData, logger, redis }: InputPa
 		deviceScaleFactor: 2
 	} );
 	if ( renderResult.code === 'ok' ) {
-		const screenshot: Sendable = renderResult.data;
+		const screenshot = renderResult.data;
 		await sendMessage( screenshot );
 	} else {
 		logger.error( `[setu-plugin] 渲染搜索图失败: `, renderResult.error );
