@@ -35,9 +35,9 @@ export async function sendPixivImg( { client, sendMessage }: InputParameter, pix
 			}
 			const img = segment.image( url );
 			return {
-				uin: client.uin,
+				user_id: client.uin,
 				content: img,
-				name: info.data.nickname,
+				nickname: info.data.nickname || "BOT",
 			};
 		} )
 	}
