@@ -1,10 +1,10 @@
-import { InputParameter } from "@/modules/command";
+import { defineDirective } from "@/modules/command";
 import { searchPixivImages } from "../util/api";
 import { PixivIllustData } from "../types/type";
 import { config, render } from "#/setu-plugin/init";
 import moment from "moment";
 
-export async function main( { sendMessage, messageData, logger, redis }: InputParameter ): Promise<void> {
+export default defineDirective( "order", async ( { messageData, sendMessage, logger, redis } ) => {
 	let rawMessage: string = messageData.raw_message;
 	if ( !rawMessage.includes( "。" ) && /升序|降序|热度|全年龄|r18|全部|(近\d+[日天月年])/.test( rawMessage ) ) {
 		await sendMessage( "请在搜索关键词后加句号与筛选条件隔开" );
@@ -80,4 +80,4 @@ export async function main( { sendMessage, messageData, logger, redis }: InputPa
 		logger.error( `[setu-plugin] 渲染搜索图失败: `, renderResult.error );
 		await sendMessage( renderResult.error );
 	}
-}
+} )

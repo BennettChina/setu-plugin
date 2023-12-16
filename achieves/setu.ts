@@ -1,4 +1,4 @@
-import { InputParameter } from "@/modules/command";
+import { defineDirective, InputParameter } from "@/modules/command";
 import { getSetu } from "#/setu-plugin/util/api";
 import { LoliconSetu } from "#/setu-plugin/types/type";
 import { config } from "#/setu-plugin/init";
@@ -31,7 +31,7 @@ async function sendAcgnImg( { messageData, sendMessage }: InputParameter ) {
 	return await sendMessage( [ image, msg ] );
 }
 
-export async function main( i: InputParameter ): Promise<void> {
+export default defineDirective( "order", async ( i ) => {
 	const { client, logger }: InputParameter = i;
 	const messageId = await sendAcgnImg( i );
 	if ( messageId && config.recallTime > 0 ) {
@@ -39,5 +39,4 @@ export async function main( i: InputParameter ): Promise<void> {
 		await wait( config.recallTime * 1000 );
 		await client.recallMessage( messageId );
 	}
-}
-
+} )

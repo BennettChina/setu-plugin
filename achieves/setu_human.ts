@@ -1,4 +1,4 @@
-import { InputParameter } from "@/modules/command";
+import { defineDirective, InputParameter } from "@/modules/command";
 import { config } from "#/setu-plugin/init";
 import { wait } from "#/setu-plugin/util/utils";
 import { getHumanImgUrlRandom } from "#/setu-plugin/util/api";
@@ -11,7 +11,7 @@ async function sendHumanImg( { sendMessage }: InputParameter ) {
 	return await sendMessage( image );
 }
 
-export async function main( i: InputParameter ): Promise<void> {
+export default defineDirective( "order", async ( i ) => {
 	const { client, logger }: InputParameter = i;
 	const messageId = await sendHumanImg( i );
 	if ( messageId && config.recallTime > 0 ) {
@@ -19,4 +19,4 @@ export async function main( i: InputParameter ): Promise<void> {
 		await wait( config.recallTime * 1000 );
 		await client.recallMessage( messageId );
 	}
-}
+} )
