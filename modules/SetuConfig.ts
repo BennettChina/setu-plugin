@@ -38,7 +38,7 @@ export default class SetuConfig implements ISetuConfig {
 			enabled: false,
 			host: "127.0.0.1",
 			port: 7890,
-			protocol: "http:"
+			protocol: "http"
 		}
 	};
 	/** 使用启用R18涩图 */
