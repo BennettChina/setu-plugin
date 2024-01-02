@@ -122,7 +122,6 @@ export async function getPixivImages( pixivId: string, size?: string ): Promise<
 			const urls: string[] = pixivInfo.body.map( body => size === "原图" ? body.urls.original : ( body.urls.regular || body.urls.original ) );
 			resolve( urls );
 		} ).catch( reason => {
-			bot.logger.error( reason );
 			if ( axios.isAxiosError( reason ) ) {
 				const err = <AxiosError>reason;
 				if ( err.response?.data ) {
