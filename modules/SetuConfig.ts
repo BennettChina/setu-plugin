@@ -1,5 +1,3 @@
-import { AxiosProxyConfig } from "axios";
-
 export interface ISetuConfig {
 	/** 使用启用R18涩图 */
 	r18: boolean;
@@ -16,7 +14,16 @@ export interface ISetuConfig {
 	/** P站查询图片信息时需要的cookie*/
 	pixiv_cookie: string;
 	
-	pixiv_proxy: AxiosProxyConfig | false;
+	pixiv_proxy: {
+		enabled: boolean;
+		host: string;
+		port: number;
+		auth?: {
+			username: string;
+			password: string;
+		};
+		protocol?: string;
+	};
 }
 
 export default class SetuConfig implements ISetuConfig {
@@ -27,7 +34,12 @@ export default class SetuConfig implements ISetuConfig {
 		recallTime: 0,
 		aliases: [ "涩图", "色图" ],
 		pixiv_cookie: "",
-		pixiv_proxy: false
+		pixiv_proxy: {
+			enabled: false,
+			host: "127.0.0.1",
+			port: 7890,
+			protocol: "http:"
+		}
 	};
 	/** 使用启用R18涩图 */
 	public r18: boolean;
@@ -44,7 +56,16 @@ export default class SetuConfig implements ISetuConfig {
 	/** P站查询图片信息时需要的cookie*/
 	public pixiv_cookie: string;
 	
-	public pixiv_proxy: AxiosProxyConfig | false;
+	public pixiv_proxy: {
+		enabled: boolean;
+		host: string;
+		port: number;
+		auth?: {
+			username: string;
+			password: string;
+		};
+		protocol?: string;
+	};
 	
 	constructor( config: any ) {
 		this.r18 = config.r18;

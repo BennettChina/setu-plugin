@@ -112,7 +112,7 @@ export async function getPixivImages( pixivId: string, size?: string ): Promise<
 				"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
 				"cookie": config.pixiv_cookie,
 			},
-			proxy: config.pixiv_proxy
+			proxy: config.pixiv_proxy.enabled ? config.pixiv_proxy : false
 		} ).then( response => {
 			const pixivInfo: PixivPages = response.data;
 			if ( pixivInfo.error ) {
@@ -122,6 +122,7 @@ export async function getPixivImages( pixivId: string, size?: string ): Promise<
 			const urls: string[] = pixivInfo.body.map( body => size === "原图" ? body.urls.original : ( body.urls.regular || body.urls.original ) );
 			resolve( urls );
 		} ).catch( reason => {
+			bot.logger.error( reason );
 			if ( axios.isAxiosError( reason ) ) {
 				const err = <AxiosError>reason;
 				if ( err.response?.data ) {
@@ -153,7 +154,7 @@ export async function getMirrorPixivImages( pixivId: string, size?: string ): Pr
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			proxy: config.pixiv_proxy
+			proxy: config.pixiv_proxy.enabled ? config.pixiv_proxy : false
 		} ).then( response => {
 			const body: MirrorPixivImages = response.data;
 			if ( !body.success ) {
@@ -210,7 +211,7 @@ export async function searchPixivImages( keyword: string, order: string = 'date_
 				"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
 				"cookie": config.pixiv_cookie,
 			},
-			proxy: config.pixiv_proxy
+			proxy: config.pixiv_proxy.enabled ? config.pixiv_proxy : false
 		} ).then( response => {
 			if ( response.data["error"] ) {
 				reject( "查询pixiv作品异常: " + response.data["message"] );

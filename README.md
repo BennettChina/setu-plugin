@@ -84,22 +84,27 @@ aliases:
 pixiv_cookie: ""
 # 系统代理设置，国内服务器必须设置系统代理，因为访问P站接口必须通过代理否则无法连接。
 # 仅接口使用该代理，图片下载仍使用上面的反代服务，所以不用担心流量问题。
-pixiv_proxy: false
+pixiv_proxy:
+    enabled: false
+    host: "127.0.0.1"
+    port: 7890
+    protocol: "http:"
 ```
 
 ```ts
 // 以下是关于pixiv_proxy 属性的类型定义
-interface AxiosProxyConfig {
-    host: string;
-    port: number;
-    auth?: {
-        username: string;
-        password: string;
+class Config {
+    pixiv_proxy: {
+        enabled: boolean;
+        host: string;
+        port: number;
+        auth?: {
+            username: string;
+            password: string;
+        };
+        protocol?: string;
     };
-    protocol?: string;
 }
-
-const pixiv_proxy: AxiosProxyConfig | false = false;
 ```
 
 ## P站反代服务
